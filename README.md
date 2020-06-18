@@ -4,7 +4,7 @@ This repository contains collections and environment variable files to import in
 
 An overview of the SharePoint REST API can be found in the [official Microsoft documentation](https://docs.microsoft.com/en-us/sharepoint/dev/sp-add-ins/get-to-know-the-sharepoint-rest-service?tabs=csom).
 
-## Setup
+## Setup
 
 To setup the Postman collections follow these steps:
 
