@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "3cf01aa9-044e-4d32-a26a-21326cd4fdba",
+		"name": "Microsoft SharePoint REST API",
+		"description": "A collection of Postman requests for the Microsoft SharePoint REST API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "Get Access Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7c1c06f-9adb-4a1e-9cd6-6dd5cace40bf",
+								"exec": [
+									"const json_response_body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"appReg_bearerToken\", json_response_body.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{appReg_clientId}}@{{realm}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{appReg_clientSecret}}",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"value": "{{principal}}/{{targetHost}}@{{realm}}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://accounts.accesscontrol.windows.net/{{realm}}/tokens/OAuth/2",
+							"protocol": "https",
+							"host": [
+								"accounts",
+								"accesscontrol",
+								"windows",
+								"net"
+							],
+							"path": [
+								"{{realm}}",
+								"tokens",
+								"OAuth",
+								"2"
+							]
+						},
+						"description": "Retrieves an access token for use in later Microsoft SharePoint REST API requests."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Realm GUID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "35cc7003-5b0f-448d-af6f-3bb5691bd4fe",
+								"exec": [
+									"// Retrieve the realm GUID from the WWW-Authenticate header",
+									"",
+									"const response_headers = pm.response.headers.all();",
+									"",
+									"for (let i = 0; i < response_headers.length; i++) {",
+									"    if (response_headers[i]['key'] === \"WWW-Authenticate\") {",
+									"",
+									"        // Retrieve the entire WWW-Authenticate header",
+									"        const www_authenticate_header = response_headers[i]['value'];",
+									"",
+									"        // Find the index within the header of the realm key",
+									"        const realm_position = www_authenticate_header.indexOf(\"realm\");",
+									"",
+									"        // Retrieve the realm GUID from the WWW-Authenticate header",
+									"        const realm_guid = www_authenticate_header.substring((realm_position + 7), (realm_position + 43));",
+									"",
+									"        // Set the realm Postman environment variable",
+									"        postman.setEnvironmentVariable(\"realm\", realm_guid);",
+									"",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{targetHost}}/_vti_bin/client.svc/",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_vti_bin",
+								"client.svc",
+								""
+							]
+						},
+						"description": "This request will return an unauthorised response, but the small piece of JavaScript within the Test tab will set a realm environment variable if the request returns a WWW-Authenticate header containing a realm key."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Lists",
+			"item": [
+				{
+					"name": "Get ListItemEntityTypeFullName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0138ff9b-fd22-49f7-88ec-d3ca04b60f88",
+								"exec": [
+									"const json_response_body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ListItemEntityTypeFullName\", json_response_body.ListItemEntityTypeFullName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{appReg_bearerToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;odata=nometadata",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists/GetByTitle('Test list')?$select=ListItemEntityTypeFullName",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists",
+								"GetByTitle('Test list')"
+							],
+							"query": [
+								{
+									"key": "$select",
+									"value": "ListItemEntityTypeFullName"
+								}
+							]
+						},
+						"description": "Retrieves the ListItemEntityTypeFullName for the given SharePoint list and stores this as an environment variable for later use."
+					},
+					"response": []
+				},
+				{
+					"name": "Create New List Item",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "736b4e53-10f0-496a-bdd8-10b72ca83bea",
+								"exec": [
+									"// Obtain the ListItemEntityTypeFullName before sending request",
+									"",
+									"pm.sendRequest(",
+									"    {",
+									"        url: \"https://\" + pm.environment.get('targetHost') + \"/_api/web/lists/GetByTitle('Test list')?$select=ListItemEntityTypeFullName\",",
+									"        header: {",
+									"            \"Authorization\": \"Bearer \" + pm.environment.get('appReg_bearerToken'),",
+									"            \"Accept\": \"application/json;odata=nometadata\"",
+									"        }",
+									"    },",
+									"    function (err, response) {",
+									"        const json_response_body = response.json();",
+									"        postman.setEnvironmentVariable(\"ListItemEntityTypeFullName\", json_response_body.ListItemEntityTypeFullName);",
+									"    }",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{appReg_bearerToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;odata=verbose",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;odata=verbose",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"__metadata\": {\n        \"type\": \"{{ListItemEntityTypeFullName}}\"\n    },\n    \"Title\": \"Item Name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists/GetByTitle('Test list')/items",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists",
+								"GetByTitle('Test list')",
+								"items"
+							]
+						},
+						"description": "This request will create a new item in a given SharePoint list. Replace 'Test list' in the URL with your own SharePoint list name."
+					},
+					"response": []
+				},
+				{
+					"name": "Get List Item",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{appReg_bearerToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json;odata=verbose",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists/GetByTitle('Test list')/items(1)",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists",
+								"GetByTitle('Test list')",
+								"items(1)"
+							]
+						},
+						"description": "This request will retrieve a given list item by the id of the item. Replace 'Test list' with your own SharePoint list name, and replace '1' with the id of the item you are trying to retrieve."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5c79354c-8c48-4558-9445-0cbff45cb819",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e4089889-f632-4272-9c54-dadfb6221130",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
