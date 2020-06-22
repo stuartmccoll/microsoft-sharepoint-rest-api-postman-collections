@@ -335,7 +335,7 @@
 								"add(FileName='filename.ext')"
 							]
 						},
-						"description": "This request will create a new item in a given SharePoint list. Replace 'Test list' in the URL with your own SharePoint list name."
+						"description": "This request will attach a file to a given SharePoint list item. Replace 'Test list' in the URL with your own SharePoint list name, '1' with your own SharePoint list item id and 'filename.ext' with your chosen file name and extension."
 					},
 					"response": []
 				},
