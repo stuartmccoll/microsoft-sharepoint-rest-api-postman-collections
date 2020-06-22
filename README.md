@@ -15,7 +15,7 @@ To setup the Postman collections follow these steps:
 
 `https://raw.githubusercontent.com/stuartmccoll/microsoft-sharepoint-rest-api-postman-collections/master/Microsoft%20SharePoint%20REST%20API.postman_collection.json`
 
-`https://raw.githubusercontent.com/stuartmccoll/microsoft-sharepoint-rest-api-postman-collections/master/Microsoft%20SharePoint%20REST%20API.postman_environment.json`
+`https://raw.githubusercontent.com/stuartmccoll/microsoft-sharepoint-rest-api-postman-collections/master/Microsoft%20SharePoint%20API.postman_environment.json`
 
 You should now see the `Microsoft SharePoint REST API` collection on the left hand side **Collections** pane.
 
