@@ -272,6 +272,86 @@
 					"response": []
 				},
 				{
+					"name": "Add File Attachment to List Item",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ecba8330-65c0-4034-aa91-14eb25070f0b",
+								"exec": [
+									"// Obtain the ListItemEntityTypeFullName before sending request",
+									"",
+									"pm.sendRequest(",
+									"    {",
+									"        url: \"https://\" + pm.environment.get('targetHost') + \"/_api/web/lists/GetByTitle('Test list')?$select=ListItemEntityTypeFullName\",",
+									"        header: {",
+									"            \"Authorization\": \"Bearer \" + pm.environment.get('appReg_bearerToken'),",
+									"            \"Accept\": \"application/json;odata=nometadata\"",
+									"        }",
+									"    },",
+									"    function (err, response) {",
+									"        const json_response_body = response.json();",
+									"        postman.setEnvironmentVariable(\"ListItemEntityTypeFullName\", json_response_body.ListItemEntityTypeFullName);",
+									"    }",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{appReg_bearerToken}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json;odata=verbose",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "biapplication/",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": ""
+							},
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists/GetByTitle('Test list')/items(1)/AttachmentFiles/add(FileName='filename.ext')",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists",
+								"GetByTitle('Test list')",
+								"items(1)",
+								"AttachmentFiles",
+								"add(FileName='filename.ext')"
+							]
+						},
+						"description": "This request will create a new item in a given SharePoint list. Replace 'Test list' in the URL with your own SharePoint list name."
+					},
+					"response": []
+				},
+				{
 					"name": "Get List Item",
 					"request": {
 						"method": "GET",
