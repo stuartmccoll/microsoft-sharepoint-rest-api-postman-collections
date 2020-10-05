@@ -330,6 +330,125 @@
 					"response": []
 				},
 				{
+					"name": "Delete List (By GUID)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9fc9108c-38c4-4794-baab-162b282d4df0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{appReg_bearerToken}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							},
+							{
+								"key": "If-Match",
+								"value": "*",
+								"type": "text"
+							},
+							{
+								"key": "X-HTTP-Method",
+								"value": "DELETE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists(guid'{list_guid}')",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists(guid'{list_guid}')"
+							]
+						},
+						"description": "This request will delete a SharePoint list based on the GUID specified in the URI. Replace the \"{list_guid}\" value in the URI with your chosen SharePoint list GUID."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete List (By Title)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4621339e-180c-4b3a-bc84-419e27bc4ccc",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{appReg_bearerToken}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							},
+							{
+								"key": "If-Match",
+								"type": "text",
+								"value": "*"
+							},
+							{
+								"key": "X-HTTP-Method",
+								"type": "text",
+								"value": "DELETE"
+							}
+						],
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists/GetByTitle('{list_title')",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists",
+								"GetByTitle('{list_title')"
+							]
+						},
+						"description": "This request will delete a SharePoint list based on the title specified in the URI. Replace the \"{list_title}\" value in the URI with your chosen SharePoint list title."
+					},
+					"response": []
+				},
+				{
 					"name": "Add File Attachment to List Item",
 					"event": [
 						{
