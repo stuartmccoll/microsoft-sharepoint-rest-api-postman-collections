@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3cf01aa9-044e-4d32-a26a-21326cd4fdba",
+		"_postman_id": "c197c2c0-e2c0-44e5-a9c8-25e9dfbcbb2e",
 		"name": "Microsoft SharePoint REST API",
 		"description": "A collection of Postman requests for the Microsoft SharePoint REST API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -15,7 +15,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e7c1c06f-9adb-4a1e-9cd6-6dd5cace40bf",
+								"id": "610c5826-515e-4bcf-8ee8-878d9fd5635a",
 								"exec": [
 									"const json_response_body = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"appReg_bearerToken\", json_response_body.access_token);"
@@ -83,7 +83,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "35cc7003-5b0f-448d-af6f-3bb5691bd4fe",
+								"id": "74b499e8-03a0-4576-8e9d-deff8fa2fe9a",
 								"exec": [
 									"// Retrieve the realm GUID from the WWW-Authenticate header",
 									"",
@@ -151,7 +151,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0138ff9b-fd22-49f7-88ec-d3ca04b60f88",
+								"id": "b8c497b2-1fe9-419e-9330-cf61ea4d831e",
 								"exec": [
 									"const json_response_body = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"ListItemEntityTypeFullName\", json_response_body.ListItemEntityTypeFullName);"
@@ -203,7 +203,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "736b4e53-10f0-496a-bdd8-10b72ca83bea",
+								"id": "16b5b2e7-613b-4417-8344-7333d6c4b8f0",
 								"exec": [
 									"// Obtain the ListItemEntityTypeFullName before sending request",
 									"",
@@ -277,7 +277,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ecba8330-65c0-4034-aa91-14eb25070f0b",
+								"id": "af4c65b5-40e5-4618-bfa1-3845d12f12a3",
 								"exec": [
 									"// Obtain the ListItemEntityTypeFullName before sending request",
 									"",
@@ -372,6 +372,71 @@
 						"description": "This request will retrieve a given list item by the id of the item. Replace 'Test list' with your own SharePoint list name, and replace '1' with the id of the item you are trying to retrieve."
 					},
 					"response": []
+				},
+				{
+					"name": "Get List (By GUID)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{appReg_bearerToken}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							}
+						],
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists(guid'{list_guid')",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists(guid'{list_guid')"
+							]
+						},
+						"description": "This request will retrieve a SharePoint list using the specified list GUID. Replace \"{list_guid}\" with your own SharePoint list GUID."
+					},
+					"response": []
+				},
+				{
+					"name": "Get List (By Title)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{appReg_bearerToken}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							}
+						],
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists/GetByTitle('{list_title}')",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists",
+								"GetByTitle('{list_title}')"
+							]
+						},
+						"description": "This request will retrieve a SharePoint list using the specified list title. Replace \"{list_title}\" with your own SharePoint list title."
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -381,7 +446,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "5c79354c-8c48-4558-9445-0cbff45cb819",
+				"id": "c8e5ce96-0857-4b1c-99a4-255e17c9f28d",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -391,7 +456,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e4089889-f632-4272-9c54-dadfb6221130",
+				"id": "bcbdc8dc-5d2e-4241-9c6b-0d48d4340898",
 				"type": "text/javascript",
 				"exec": [
 					""
