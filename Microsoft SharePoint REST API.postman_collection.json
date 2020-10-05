@@ -272,6 +272,64 @@
 					"response": []
 				},
 				{
+					"name": "Create List",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdec1bc-a80e-4bdb-87e3-a9271fd60778",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{appReg_bearerToken}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json;odata=verbose"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"__metadata\": {\n        \"type\": \"SP.List\"\n    },\n    \"AllowContentTypes\": true,\n    \"BaseTemplate\": 100,\n    \"ContentTypesEnabled\": true,\n    \"Description\": \"My list description\",\n    \"Title\": \"My List Title\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{targetHost}}/_api/web/lists",
+							"protocol": "https",
+							"host": [
+								"{{targetHost}}"
+							],
+							"path": [
+								"_api",
+								"web",
+								"lists"
+							]
+						},
+						"description": "This request will create a new SharePoint list. Replace the 'Description' and 'Title' values in the request Body section with your chosen values."
+					},
+					"response": []
+				},
+				{
 					"name": "Add File Attachment to List Item",
 					"event": [
 						{
